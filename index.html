@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix design</title>
+
+<!-- Google modern font -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #141414;
+  color: white;
+}
+
+/* FONT UTILITIES */
+.bold { font-weight: 700 !important; }
+.italic { font-style: italic !important; }
+.big { font-size: 46px !important; }
+.small { font-size: 28px !important; }
+.normal { font-weight: 400 !important; }
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: rgba(20,20,20,0.9);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .logo {
+  font-size: 40px;
+  font-weight: bold;
+  color: red;
+}
+
+header .signin {
+  background-color: red;
+  border: none;
+  padding: 10px 25px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  border-radius: 4px;
+}
+
+/* Hero / Banner */
+.hero {
+  position: relative;
+  height: 600px;
+  background: url('https://cdn.wallpapersafari.com/24/74/zgeTuV.jpg') no-repeat center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 1;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero-text h1 {
+  font-family: Arial Black, Arial, sans-serif;
+  font-size: 60px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  line-height: 1.1;
+}
+
+.hero-text p {
+  font-size: 18px;
+}
+
+/* Email form */
+.email-form {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.email-form input[type="email"] {
+  padding: 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  width: 250px;
+  color: white;
+  background-color: #141414;
+}
+
+.email-form input::placeholder {
+  color: #444;
+}
+
+.email-form button {
+  padding: 15px 25px;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Rows */
+.rows {
+  padding: 20px 30px;
+}
+
+.rows h2 {
+  font-size: 26px;
+  font-weight: bold;
+  margin: 40px 0 20px;
+  position: relative;
+  padding-top: 14px;
+}
+
+.rows h2::before {
+  content:"";
+  position:absolute;
+  top:0;
+  width:90px;
+  height:3px;
+  background:red;
+  border-radius:2px;
+}
+
+/* Trending row */
+.trending-row {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding-left: 60px;
+  align-items: center;
+}
+
+.trending-card {
+  width: 170px;
+  height: 240px;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  flex: 0 0 auto;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.trending-card:hover {
+  transform: scale(1.05);
+}
+
+.rank-number {
+  position: absolute;
+  left: -50px;
+  bottom: 10px;
+  font-size: 130px;
+  font-weight: 900;
+  color: black;
+  -webkit-text-stroke: 3px white;
+  text-shadow: 0 6px 20px rgba(0,0,0,0.8);
+  z-index: 10;
+  font-family: Impact, Arial Black, sans-serif;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(transparent,rgba(0,0,0,0.8));
+  text-align: right;
+  padding: 8px 12px;
+  font-size: 22px;
+  font-weight: bold;
+  z-index: 3;
+}
+
+.arrow {
+  font-size: 28px;
+  transition: 0.3s;
+}
+
+.trending-card:hover .arrow {
+  transform: translateX(6px);
+}
+
+.trending-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* More reasons section */
+.join-section {
+  padding: 60px 30px;
+  background-color: #000;
+  text-align: left; /* ✅ Align left */
+}
+
+.join-section h2 {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 36px;      /* ↓ utility ашиглахад өөрчлөгдөнө */
+  font-weight: 400;     /* ↓ utility ашиглахад өөрчлөгдөнө */
+  margin: 50px 0 30px;
+  letter-spacing: 0.3px;
+  padding-left: 0;      /* ❗ илүү зүүнд ойртууллаа */
+}
+
+/* Cards grid (4 ш чанга дөрвөлжин) */
+.join-cards {
+  display: flex;          /* ← grid биш scroll-гүй 1 мөр 4 ш болно */
+  gap: 20px;
+  justify-content: start; /* ✅ Align left */
+}
+
+/* Netflix style gradient cards */
+.join-card {
+  background: linear-gradient(160deg, #191970 10%, #7b1fa2 40%, #000000 80%);
+  padding: 25px;
+  border-radius: 18px;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+  transition: 0.3s ease;
+}
+
+.join-card:hover {
+  box-shadow: 0 6px 22px rgba(229, 9, 20, 0.6), 0 0 30px rgba(123, 31, 162, 0.4);
+  transform: scale(1.03);
+}
+
+.join-card h3 {
+  font-size: 19px;
+  font-weight: 600; /* bold биш + зузаан */
+  margin-bottom: 12px;
+  font-family: "Poppins", sans-serif;
+}
+
+.join-card p {
+  color: #ddd;
+  line-height: 1.6;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+}
+
+.join-card .icon {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  width: 54px;
+  height: 54px;
+  border-radius: 8px;  /* ← дугуй биш, зүгээр дөрвөлжин icon болгов */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  background: linear-gradient(160deg, #191970 10%, #7b1fa2 40%, #000000 80%);
+}
+
+/* FAQ section */
+.faq-section {
+  padding: 60px 30px;
+  background-color: #111;
+  text-align: left; /* ✅ Align left */
+}
+
+.faq-section h2 {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 26px !important;
+  font-weight: 400 !important;
+  padding-left: 0; /* ✅ Илүү зүүнд харагдана */
+  margin-bottom:30px;
+}
+
+/* FAQ accordion box-ийг илүү урт болгох */
+.accordion-header {
+  padding: 20px;
+  font-size: 16px;
+  font-weight: 250;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  min-height: 50px;
+  width: 100%;
+  max-width: 1200px; /* ✅ Box илүү урт */
+}
+
+/* Responsive font sizes for utility classes */
+@media (max-width: 1024px) {
+  .join-section h2 { font-size: 32px !important; }
+  .big { font-size: 40px !important; }
+  .small { font-size: 24px !important; }
+}
+
+@media (max-width: 768px) {
+  .hero{height:300px}
+  .hero-text h1{font-size:32px}
+  .trending-card{width:120px;height:170px}
+  .rank-number{font-size:90px; left:-36px}
+  .trending-row{padding-left:36px}
+  header{flex-direction:column;align-items:flex-start;gap:10px}
+
+  .join-section h2 { font-size: 26px !important; }
+  .big { font-size: 32px !important; }
+  .small { font-size: 20px !important; }
+}
+
+@media (max-width: 480px) {
+  .join-section h2 { font-size: 22px !important; }
+  .big { font-size: 26px !important; }
+  .small { font-size: 18px !important; }
+}
+  
+
+/* Accordion */
+.accordion {
+  max-width:1200px;
+  margin:auto;
+}
+
+.accordion-item {
+  background:#222;
+  margin-bottom:8px;
+  border-radius:6px;
+  overflow:hidden;
+  width:100%;
+}
+
+.accordion-header {
+  padding:20px;
+  font-size:22px;
+  font-weight:bold;
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
+}
+
+.accordion-header:hover {
+  background:#333;
+}
+
+.accordion-body {
+  max-height:0;
+  overflow:hidden;
+  background:#1a1a1a;
+  padding:0 20px;
+  font-size:18px;
+  line-height:1.6;
+  transition:0.4s ease;
+  color:#ccc;
+}
+
+.accordion-item.active .accordion-body {
+  padding:20px;
+  max-height:200px;
+}
+
+.plus {
+  font-size:30px;
+  transition:0.3s;
+}
+
+.accordion-item.active .plus {
+  transform:rotate(45deg);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">NETFLIX</div>
+  <button class="signin">Sign In</button>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>Unlimited movies,<br>TV Shows, and<br>more.</h1>
+    <p>Starts at USD 2.99. Cancel anytime.</p>
+    <p>Ready to watch? Enter your email to create or restart your membership.</p>
+    <form class="email-form">
+      <input type="email" placeholder="Enter your email" required>
+      <button>Get Started</button>
+    </form>
+  </div>
+</section>
+
+<section class="rows">
+  <h2>Trending Now</h2>
+  <div class="trending-row">
+    <!-- Trending cards -->
+    <div class="trending-card" style="background-image:url('https://www.backtothemovies.com/wp-content/uploads/2025/11/Stranger-Things-Season-5.jpg')"><div class="rank-number">1</div></div>
+    <div class="trending-card" style="background-image:url('https://images.lifestyleasia.com/wp-content/uploads/sites/2/2025/10/30111114/hero-image-3-1600x900.jpeg')"><div class="rank-number">2</div></div>
+    <div class="trending-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/en/9/93/KPDHposter.jpeg')"><div class="rank-number">3</div></div>
+    <div class="trending-card" style="background-image:url('https://wrestling.pt/wp-content/uploads/2025/11/wwe-survivor-series-29112025-preview.jpg')"><div class="rank-number">4</div></div>
+    <div class="trending-card" style="background-image:url('https://tse1.mm.bing.net/th/id/OIP.FAnwFVqZlmKxbst05GP0PwHaK-?rs=1&pid=ImgDetMain&o=7&rm=3')"><div class="rank-number">5</div></div>
+    <div class="trending-card" style="background-image:url('https://www.kpopmap.com/wp-content/uploads/2025/06/Squid_Game_season_3_poster-HQ.png')"><div class="rank-number">6</div></div>
+    <div class="trending-card" style="background-image:url('https://th.bing.com/th/id/R.277ab2d7f7a7e0588c86f41200b30c08?rik=FwB5pfX9snB%2fzg&riu=http%3a%2f%2fchriscrespo.com%2fwp-content%2fuploads%2f2015%2f06%2faviator_ver2.jpg&ehk=vv3CX1WQNkjABV2YNuWJckvhfzkDIrU3KKHxgIS0W48%3d&risl=&pid=ImgRaw&r=0')">
+      <div class="rank-number">7</div>
+    </div>
+    <div class="trending-card" style="background-image:url('https://tse1.explicit.bing.net/th/id/OIP.2JuOJ2SOboysDZ9Yt381-QHaKj?rs=1&pid=ImgDetMain&o=7&rm=3')">
+      <div class="rank-number">8</div>
+    </div>
+    <div class="trending-card" style="background-image:url('https://static.moviecrow.com/gallery/20250904/250786-ssktk.jpeg')">
+      <div class="rank-number">9</div>
+    </div>
+    <div class="trending-card" style="background-image:url('https://th.bing.com/th/id/R.ba3202b86759a9df7a556eb28109032c?rik=M5sDngMQC2OPdQ&pid=ImgRaw&r=0')">
+      <div class="rank-number">10</div>
+    </div>
+  </div>
+</section>
+
+<section class="join-section">
+  <h2 class="more-title">More reasons to join</h2>
+  <div class="join-cards">
+    <div class="join-card"><h3>Enjoy on your TV</h3><p>Watch on Smart TVs, Playstation, Xbox, Apple TV, and more.</p><div class="icon icon-tv">📺</div></div>
+    <div class="join-card"><h3>Download your shows to watch offline</h3><p>Save your favorites easily and always have something to watch.</p><div class="icon icon-down">⬇</div></div>
+    <div class="join-card"><h3>Watch everywhere</h3><p>Stream on your phone, tablet, laptop, and TV shows on your phone, tablet, laptop, and TV.</p><div class="icon icon-world">🌐</div></div>
+    <div class="join-card"><h3>Create profiles for kids</h3><p>Safe space for kids on adventures with their favorite characters in a space made just for them — free with your membership.</p><div class="icon icon-kids">👦</div></div>
+  </div>
+</section>
+
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="accordion">
+      <div class="accordion-item"><div class="accordion-header">What is Netflix?<span class="plus">+</span></div><div class="accordion-body">Netflix is a streaming service.</div></div>
+      <div class="accordion-item"><div class="accordion-header">How much does Netflix cost?<span class="plus">+</span></div><div class="accordion-body">USD 2.99+</div></div>
+      <div class="accordion-item"><div class="accordion-header">Where can I watch?<span class="plus">+</span></div><div class="accordion-body">USD 2.99+</div></div>
+      <div class="accordion-item"><div class="accordion-header">How do I cancel?<span class="plus">+</span></div><div class="accordion-body">USD 2.99+</div></div>
+      <div class="accordion-item"><div class="accordion-header">What can I watch on Netflix?<span class="plus">+</span></div><div class="accordion-body">USD 2.99+</div></div>
+      <div class="accordion-item"><div class="accordion-header">Is Netflix good for kids?<span class="plus">+</span></div><div class="accordion-body">USD 2.99+</div></div>
+      
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.accordion-header').forEach(header => {
+  header.addEventListener('click', ()=>{
+    header.parentElement.classList.toggle('active');
+  });
+});
+</script>
+
+<section style="padding:40px 30px; background:#000;">
+  <div style="max-width:1200px; margin:auto; text-align:left;">
+    <p style="font-size:20px; margin-bottom:16px; font-family:'Poppins',sans-serif; font-weight:400;">
+      Ready to watch? Enter your email to create or restart your membership.
+    </p>
+    <form class="email-form">
+      <input type="email" placeholder="Enter your email">
+      <button>Get Started</button>
+    </form>
+  </div>
+</section>
+
+<footer <!-- ✅ Netflix style footer (FAQ-н доор нэмэх хэсэг) -->
+<section style="background:#000; padding:60px 30px; font-family:'Poppins',sans-serif; font-weight:400;">
+  <div style="max-width:1200px; margin:auto;">
+
+    <p style="color:#777; font-size:16px; margin-bottom:24px;">
+      Questions? Call <a href="#" style="color:#777; text-decoration:underline;">000-800-919-1694</a>
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; text-align:left; font-size:14px;">
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <a href="#" style="color:#777; text-decoration:underline;">FAQ</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Investor Relations</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Privacy</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Speed Test</a>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <a href="#" style="color:#777; text-decoration:underline;">Help Center</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Jobs</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Cookie Preferences</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Legal Notices</a>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <a href="#" style="color:#777; text-decoration:underline;">Account</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Ways to Watch</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Corporate Information</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Only on Netflix</a>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <a href="#" style="color:#777; text-decoration:underline;">Media Center</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Terms of Use</a>
+        <a href="#" style="color:#777; text-decoration:underline;">Contact Us</a>
+      </div>
+
+    </div>
+
+    <!-- Language selector -->
+    <div style="margin-top:30px;">
+      <select style="background:#141414; color:white; padding:8px 16px; border:1px solid #333; border-radius:4px; font-size:14px;">
+        <option>🌐 English</option>
+      </select>
+    </div>
+
+    <p style="color:#777; margin-top:24px; font-size:14px;">This page is protected by Google reCAPTCHA to ensure you're not a bot. Learn more.</p>
+
+  </div>
+</section>
+
+</footer>
+
+</body>
+</html>
